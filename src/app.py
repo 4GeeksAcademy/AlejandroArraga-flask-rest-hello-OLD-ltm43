@@ -31,6 +31,8 @@ setup_admin(app)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
+#INICIO DEL CODIGO
+
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
@@ -39,11 +41,35 @@ def sitemap():
 @app.route('/user', methods=['GET'])
 def handle_hello():
 
+    print('get all users')
+    user = User.query.get(2)
+
+    print(user)
+    print(user.serialize())
+
+    all_users= User.query.all()
+    print(all_users)
+    results = list(map(lambda user: user.serialize(),all_users))
+    print(results)
+
     response_body = {
-        "msg": "Hello, this is your GET /user response "
+        "msg": "lista de todos los usuarios ",
+        "users": results
     }
 
     return jsonify(response_body), 200
+
+@app.route('/test', methods=['GET'])
+def test():
+
+    response_body = {
+        "msg": "esto es uan prueba "
+    }
+
+    return jsonify(response_body), 200
+
+
+#FIN DELH CODIGO
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
