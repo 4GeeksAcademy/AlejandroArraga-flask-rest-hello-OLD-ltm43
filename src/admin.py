@@ -8,7 +8,6 @@ def setup_admin(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     admin = Admin(app, name='4Geeks Admin', template_mode='bootstrap3')
 
-    # Add all models to the admin interface
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(People, db.session))
     admin.add_view(ModelView(Planets, db.session))

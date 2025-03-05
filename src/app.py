@@ -31,7 +31,6 @@ setup_admin(app)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# Generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
@@ -67,10 +66,10 @@ def get_all_users():
     results = list(map(lambda user: user.serialize(), users))
     return jsonify({"msg": "Lista de todos los usuarios", "users": results}), 200
 
-# Endpoints para Favorites (sin autenticación, asumimos un user_id temporal, por ejemplo, 1)
+# Endpoints para Favorites
 @app.route('/users/favorites', methods=['GET'])
 def get_user_favorites():
-    user_id = 1  # Esto debería venir de un sistema de autenticación en el futuro
+    user_id = 1 
     favorites_people = FavoritesPeople.query.filter_by(user_id=user_id).all()
     favorites_planets = FavoritesPlanets.query.filter_by(user_id=user_id).all()
 
@@ -85,7 +84,7 @@ def get_user_favorites():
 
 @app.route('/favorite/people/<int:people_id>', methods=['POST'])
 def add_people_favorite(people_id):
-    user_id = 1  # Esto debería venir de un sistema de autenticación en el futuro
+    user_id = 1  
     new_favorite = FavoritesPeople(user_id=user_id, people_id=people_id)
     db.session.add(new_favorite)
     db.session.commit()
@@ -93,7 +92,7 @@ def add_people_favorite(people_id):
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
 def add_planet_favorite(planet_id):
-    user_id = 1  # Esto debería venir de un sistema de autenticación en el futuro
+    user_id = 1  
     new_favorite = FavoritesPlanets(user_id=user_id, planet_id=planet_id)
     db.session.add(new_favorite)
     db.session.commit()
@@ -101,7 +100,7 @@ def add_planet_favorite(planet_id):
 
 @app.route('/favorite/people/<int:people_id>', methods=['DELETE'])
 def delete_people_favorite(people_id):
-    user_id = 1  # Esto debería venir de un sistema de autenticación en el futuro
+    user_id = 1  
     favorite = FavoritesPeople.query.filter_by(user_id=user_id, people_id=people_id).first()
     if not favorite:
         return jsonify({"msg": f"No se encontró el favorito con people_id {people_id}"}), 404
@@ -111,7 +110,7 @@ def delete_people_favorite(people_id):
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
 def delete_planet_favorite(planet_id):
-    user_id = 1  # Esto debería venir de un sistema de autenticación en el futuro
+    user_id = 1  
     favorite = FavoritesPlanets.query.filter_by(user_id=user_id, planet_id=planet_id).first()
     if not favorite:
         return jsonify({"msg": f"No se encontró el favorito con planet_id {planet_id}"}), 404
@@ -119,7 +118,7 @@ def delete_planet_favorite(planet_id):
     db.session.commit()
     return jsonify({"msg": f"Planeta con ID {planet_id} eliminado de favoritos"}), 200
 
-# Test endpoint (puedes eliminarlo si no lo necesitas)
+# Test endpoint
 @app.route('/test', methods=['GET'])
 def test():
     response_body = {
